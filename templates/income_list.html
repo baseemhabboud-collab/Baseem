@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}הכנסות{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>הכנסות</h1>
+  <a class="btn" href="{{ url_for('income_new') }}">+ הוספת הכנסה</a>
+</div>
+
+<table class="list">
+  <tr>
+    <th>תאריך</th><th>מקור</th><th>תיאור</th><th>ברוטו</th><th>נטו</th>
+    <th>שעות</th><th>בונוס</th><th>ניכוי במקור</th><th></th>
+  </tr>
+  {% for e in entries %}
+  <tr>
+    <td>{{ e.date.strftime("%d/%m/%Y") }}</td>
+    <td>{{ e.source_label }}</td>
+    <td>{{ e.description or "" }}</td>
+    <td>{{ "%.0f"|format(e.gross) }} ₪</td>
+    <td>{{ "%.0f"|format(e.net or 0) }} ₪</td>
+    <td>{{ e.hours or "" }}</td>
+    <td>{{ "%.0f"|format(e.bonus or 0) }} ₪</td>
+    <td>{{ "%.0f"|format(e.tax_withheld or 0) }} ₪</td>
+    <td>
+      <form method="post" action="{{ url_for('income_delete', entry_id=e.id) }}" onsubmit="return confirm('למחוק רשומה זו?');">
+        <button class="link-btn" type="submit">מחיקה</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="9" class="muted">אין רשומות הכנסה עדיין.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

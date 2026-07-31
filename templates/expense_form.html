@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}הוספת הוצאה{% endblock %}
+{% block content %}
+<h1>הוספת הוצאה</h1>
+<form method="post" class="form">
+  <label>תאריך
+    <input type="date" name="date" value="{{ today.isoformat() }}" required>
+  </label>
+
+  <label>קטגוריה
+    <select name="category" required>
+      {% for value, label in categories %}
+      <option value="{{ value }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>סכום (₪)
+    <input type="number" step="0.01" name="amount" required>
+  </label>
+
+  <label>אחוז מוכר לצרכי מס (%)
+    <input type="number" step="1" name="recognized_pct" value="100">
+  </label>
+
+  <label>הערה
+    <input type="text" name="note">
+  </label>
+
+  <button class="btn" type="submit">שמירה</button>
+</form>
+{% endblock %}

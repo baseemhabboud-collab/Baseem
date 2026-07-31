@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}דשבורד{% endblock %}
+{% block content %}
+
+<div class="period-nav">
+  <a href="{{ url_for('dashboard', year=prev_year, month=prev_month) }}">&raquo; חודש קודם</a>
+  <h1>{{ month }}/{{ year }}</h1>
+  <a href="{{ url_for('dashboard', year=next_year, month=next_month) }}">חודש הבא &laquo;</a>
+</div>
+
+<section class="cards">
+  <div class="card">
+    <h3>הכנסה כוללת (ברוטו)</h3>
+    <p class="big">{{ "%.0f"|format(income.total_gross) }} ₪</p>
+    <p class="muted">בית חולים: {{ "%.0f"|format(income.hospital_gross) }} ₪ · בוסטון: {{ "%.0f"|format(income.boston_gross) }} ₪</p>
+  </div>
+
+  <div class="card warn">
+    <h3>רזרבת מס נדרשת מבוסטון</h3>
+    <p class="big">{{ "%.0f"|format(income.reserve_needed) }} ₪</p>
+    <p class="muted">
+      נוכה במקור: {{ "%.0f"|format(income.boston_withheld) }} ₪ ·
+      להפריש בנוסף: <strong>{{ "%.0f"|format(income.additional_reserve) }} ₪</strong>
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>הוצאות מוכרות החודש</h3>
+    <p class="big">{{ "%.0f"|format(expenses.recognized) }} ₪</p>
+    <p class="muted">מתוך {{ "%.0f"|format(expenses.total) }} ₪ הוצאות כולל</p>
+  </div>
+</section>
+
+<section class="grid2">
+  <div class="panel">
+    <h2>פירוט הכנסת בוסטון (לפני/אחרי מע"מ)</h2>
+    <table>
+      <tr><td>ברוטו כולל מע"מ</td><td>{{ "%.0f"|format(income.boston_gross) }} ₪</td></tr>
+      <tr><td>נטו ממע"מ (הכנסה בפועל)</td><td>{{ "%.0f"|format(income.boston_net_of_vat) }} ₪</td></tr>
+      <tr><td>רכיב מע"מ</td><td>{{ "%.0f"|format(income.boston_vat_component) }} ₪</td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>הוצאות לפי קטגוריה</h2>
+    {% if expenses.by_category %}
+    <table>
+      <tr><th>קטגוריה</th><th>סה"כ</th><th>מוכר</th></tr>
+      {% for cat, vals in expenses.by_category.items() %}
+      <tr><td>{{ cat }}</td><td>{{ "%.0f"|format(vals.total) }} ₪</td><td>{{ "%.0f"|format(vals.recognized) }} ₪</td></tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <p class="muted">אין הוצאות רשומות לחודש זה.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="panel">
+  <h2>סיכום שנתי מצטבר ({{ year }})</h2>
+  <table>
+    <tr><td>הכנסה ברוטו מצטברת</td><td>{{ "%.0f"|format(ytd.total_gross) }} ₪</td></tr>
+    <tr><td>רזרבת מס נדרשת מצטברת (בוסטון)</td><td>{{ "%.0f"|format(ytd.total_reserve_needed) }} ₪</td></tr>
+    <tr><td>הוצאות מוכרות מצטברות</td><td>{{ "%.0f"|format(ytd.total_expenses_recognized) }} ₪</td></tr>
+  </table>
+</section>
+
+<section class="panel tips">
+  <h2>הזדמנויות חיסכון</h2>
+  <ul>
+    {% for tip in tips %}
+    <li>{{ tip }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% endblock %}

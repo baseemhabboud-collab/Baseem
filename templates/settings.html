@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}הגדרות{% endblock %}
+{% block content %}
+<h1>הגדרות תכנון מס</h1>
+<form method="post" class="form">
+  <label>נקודות זיכוי
+    <input type="number" step="0.01" name="credit_points" value="{{ settings.credit_points }}">
+  </label>
+
+  <label>אחוז הפרשה מומלץ מהכנסת בוסטון (%)
+    <input type="number" step="0.1" name="reserve_pct" value="{{ "%.1f"|format(settings.reserve_pct * 100) }}">
+  </label>
+
+  <label>שיעור מע"מ (%)
+    <input type="number" step="0.1" name="vat_rate" value="{{ "%.1f"|format(settings.vat_rate * 100) }}">
+  </label>
+
+  <label>ביטוח לאומי + בריאות לעצמאי (%)
+    <input type="number" step="0.01" name="national_insurance_pct" value="{{ "%.2f"|format(settings.national_insurance_pct * 100) }}">
+  </label>
+
+  <label>ניכוי מס במקור בבוסטון (%)
+    <input type="number" step="0.1" name="boston_withholding_pct" value="{{ "%.1f"|format(settings.boston_withholding_pct * 100) }}">
+  </label>
+
+  <label>ביטוח אחריות מקצועית — עלות שנתית (₪)
+    <input type="number" step="1" name="insurance_annual" value="{{ settings.insurance_annual }}">
+  </label>
+
+  <label>דלק/רכב — עלות חודשית ממוצעת (₪)
+    <input type="number" step="1" name="fuel_monthly" value="{{ settings.fuel_monthly }}">
+  </label>
+
+  <label>דלק/רכב — % מוכר ללא יומן נסיעות (%)
+    <input type="number" step="1" name="fuel_recognized_pct" value="{{ "%.0f"|format(settings.fuel_recognized_pct * 100) }}">
+  </label>
+
+  <button class="btn" type="submit">שמירה</button>
+</form>
+{% endblock %}

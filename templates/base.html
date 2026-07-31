@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ניהול חשבונות{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">ניהול חשבונות — ד"ר בסים</div>
+    <nav>
+      <a href="{{ url_for('dashboard') }}">דשבורד</a>
+      <a href="{{ url_for('income_list') }}">הכנסות</a>
+      <a href="{{ url_for('expense_list') }}">הוצאות</a>
+      <a href="{{ url_for('settings_page') }}">הגדרות</a>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="disclaimer">
+    כל האחוזים והחישובים הם הערכה לתכנון בלבד ואינם ייעוץ מס מחייב.
+    לחתימה על דוח שנתי וסוגיות גבוליות יש לפנות לרואה חשבון מוסמך.
+  </footer>
+</body>
+</html>
