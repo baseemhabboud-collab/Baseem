@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}הוצאות{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>הוצאות</h1>
+  <a class="btn" href="{{ url_for('expense_new') }}">+ הוספת הוצאה</a>
+</div>
+
+<table class="list">
+  <tr>
+    <th>תאריך</th><th>קטגוריה</th><th>סכום</th><th>% מוכר</th><th>מוכר בפועל</th><th>הערה</th><th></th>
+  </tr>
+  {% for e in entries %}
+  <tr>
+    <td>{{ e.date.strftime("%d/%m/%Y") }}</td>
+    <td>{{ e.category_label }}</td>
+    <td>{{ "%.0f"|format(e.amount) }} ₪</td>
+    <td>{{ "%.0f"|format(e.recognized_pct * 100) }}%</td>
+    <td>{{ "%.0f"|format(e.recognized_amount) }} ₪</td>
+    <td>{{ e.note or "" }}</td>
+    <td>
+      <form method="post" action="{{ url_for('expense_delete', entry_id=e.id) }}" onsubmit="return confirm('למחוק רשומה זו?');">
+        <button class="link-btn" type="submit">מחיקה</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7" class="muted">אין רשומות הוצאה עדיין.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
